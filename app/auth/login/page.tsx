@@ -17,8 +17,8 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
     const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) { setLoading(false); setError(error.message); return; }
+    router.refresh(); // sync session cookie with the server before navigating
     router.push('/dashboard');
   };
 

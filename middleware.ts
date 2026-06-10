@@ -30,9 +30,19 @@ export async function middleware(request: NextRequest) {
     (p) => request.nextUrl.pathname === p || request.nextUrl.pathname.startsWith(`${p}/`)
   );
 
+  const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
+
+  // Unauthenticated user trying to reach a protected page → login
   if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = '/auth/login';
+    return NextResponse.redirect(url);
+  }
+
+  // Authenticated user on a login/signup page → dashboard
+  if (isAuthPage && user) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
 

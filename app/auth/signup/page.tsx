@@ -24,6 +24,7 @@ export default function SignupPage() {
       setMessage('Check your email for a confirmation link.');
       return;
     }
+    router.refresh(); // sync session cookie with the server before navigating
     router.push('/dashboard');
   };
 
